@@ -1,9 +1,41 @@
 import React, { useState } from "react";
 import "./Stopwatch.css";
 import TimeBtn from "./Components/TimeBtn";
+import { Start, Stop, Resume, Pause } from "../Constants.jsx";
 
 function Stopwatch() {
   const [stopwatchTime, setStopwatchTime] = useState(0);
+  // const [id, setId] = useState(0);
+  const [secPassed, setSecPassed] = useState(0);
+  const [timerId, setTimerId] = useState(null);
+  // const startTimer = (_) => {
+  //   setTimerId((_) => {
+  //     setInterval(() => {
+  //       setSecPassed((sec) => sec + 1);
+  //     }, 1000);
+  //   });
+  // };
+  const startTimer = (_) => {
+    setTimerId((_) => {
+      setInterval(() => {
+        setSecPassed((sec) => sec + 1);
+      }, 1000);
+    });
+    // setTimerId(tId);
+  };
+  // const startTimer = (_) => {
+  //   setInterval(() => {
+  //     setSecPassed((sec) => sec + 1);
+  //   }, 1000);
+  // };
+  // const stopTimer = () => {
+  //   clearInterval(timerId);
+  // };
+  const stopTimer = () => {
+    clearInterval(timerId);
+    // setSecPassed(0);
+  };
+
   return (
     <>
       <div className="container">
@@ -14,22 +46,28 @@ function Stopwatch() {
         <div className="text">00:00:00</div> */}
         {stopwatchTime === 0 && (
           <TimeBtn
-            type="start"
-            text="Start"
-            handleClick={() => setStopwatchTime(() => stopwatchTime + 1)}
+            type={Start.type}
+            text={Start.text}
+            handleClick={() => {
+              setStopwatchTime(() => stopwatchTime + 1);
+              startTimer();
+            }}
           />
         )}
         {stopwatchTime === 1 && (
           <>
             <TimeBtn
-              type="stop"
-              text="Stop"
-              handleClick={() => setStopwatchTime(0)}
+              type={Stop.type}
+              text={Stop.text}
+              handleClick={() => {
+                stopTimer();
+                // setStopwatchTime(0);
+              }}
             />
-            <TimeBtn type="time" text="00:00:00" />
+            <TimeBtn type="time" text={secPassed} />
             <TimeBtn
-              type="pause"
-              text="pause"
+              type={Pause.type}
+              text={Pause.text}
               handleClick={() => setStopwatchTime(2)}
             />
           </>
@@ -37,14 +75,14 @@ function Stopwatch() {
         {stopwatchTime === 2 && (
           <>
             <TimeBtn
-              type="stop"
-              text="Stop"
+              type={Stop.type}
+              text={Stop.text}
               handleClick={() => setStopwatchTime(0)}
             />
             <TimeBtn type="time" text="00:00:00" />
             <TimeBtn
-              type="resume"
-              text="Resume"
+              type={Resume.type}
+              text={Resume.text}
               handleClick={() => setStopwatchTime(1)}
             />
           </>
